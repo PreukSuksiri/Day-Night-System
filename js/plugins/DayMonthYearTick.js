@@ -163,7 +163,7 @@
 						
 					}
 					
-					$gameSystem._DayMonthYearTickPlugin.MinuteLimit =60;
+					$gameSystem._DayMonthYearTickPlugin.MinuteLimit =59;
 					$gameSystem._DayMonthYearTickPlugin.HourLimit =23;
 					$gameSystem._DayMonthYearTickPlugin.DayOfMonthLimit =30;
 					$gameSystem._DayMonthYearTickPlugin.DayOfWeekLimit =7;
