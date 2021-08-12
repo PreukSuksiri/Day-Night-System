@@ -364,7 +364,7 @@ var dataM2 = DataManager.correctDataErrors;
 				  {
 					 
 					$gameSystem._DayMonthYearTickPlugin.Interval = setInterval(fnInterval, $gameSystem._DayMonthYearTickPlugin.RealLifeSecondEquivalent*1000);
-									 
+						$gameSystem._DayMonthYearTickPlugin.ForceUpdate = fnUpdate;			 
 				  }
 			}
 			
