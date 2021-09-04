@@ -2,6 +2,7 @@
 // DayMonthYearTick.js (Ver1.0.1)
 //=============================================================================
 // 2020.Sep.19 Ver1.0.0  First Release
+// 2020.Sep.21 Ver1.0.1  Debugged where loading game caused interval function to run twice
 
 /*:
  * @target MZ
