@@ -305,10 +305,13 @@
 				
 					if ("_DayMonthYearTickPlugin" in $gameSystem == true)
 					{
+						if ($gameSystem._DayMonthYearTickPlugin.Enable != 1)
+						{
+							$gameSystem._DayMonthYearTickPlugin.Enable = 1;
+							setTimeout(fnInterval2, $gameSystem._DayMonthYearTickPlugin.RealLifeSecondEquivalent*1000);
+							$gameSystem._DayMonthYearTickPlugin.ForceUpdate = fnUpdate;
+						}
 						
-						$gameSystem._DayMonthYearTickPlugin.Enable = 1;
-						setTimeout(fnInterval2, $gameSystem._DayMonthYearTickPlugin.RealLifeSecondEquivalent*1000);
-						$gameSystem._DayMonthYearTickPlugin.ForceUpdate = fnUpdate;
 					}
 					
 					
