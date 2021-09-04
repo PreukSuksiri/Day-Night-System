@@ -109,11 +109,11 @@
 
 (() => {
 	
-	var myWindow;
-	
 	// anonymous class for avoid nameclashing.
-	var fnInterval;
-	var fnUpdate;
+	var fnInterval = null;
+	var fnInterval2 = null;
+	var fnUpdate = null;
+
 	var dataM = DataManager.createGameObjects;
 	
 	
@@ -185,7 +185,16 @@
 			  
 			  //Interval codes
 			  
+			  var dataInitTitle = Window_TitleCommand.initCommandPosition;
 			  
+			  Window_TitleCommand.initCommandPosition = function(){
+				  $gameSystem._DayMonthYearTickPlugin.Enable = 0;
+				dataInitTitle();
+
+				
+			  };
+			  
+			
 			fnUpdate = function(){
 				if (minuteEventBind >= 1)
 								{
@@ -269,43 +278,25 @@
 				
 			fnInterval = function(){
 				
-				 
-								$gameSystem._DayMonthYearTickPlugin.MinuteCount += 1;
-								fnUpdate();
-							};
+			};
 							
-				/*
-				Game_Map = class extends Game_Map {
+			fnInterval2 = function(){
+				
+				if ($gameSystem._DayMonthYearTickPlugin.Enable == 1)
+				{
+					$gameSystem._DayMonthYearTickPlugin.MinuteCount += 1;
+					fnUpdate();
 					
-					constructor(){
-					  super();
-					  }
-					  
-				  setup(){
-					  super.setup();
-					  alert('k1')
-					    //Auto start interval if enabled
-						if ("_DayMonthYearTickPlugin" in $gameSystem == true)
-						{
-							if ("Enable" in $gameSystem._DayMonthYearTickPlugin == true)
-							{
-								if ($gameSystem._DayMonthYearTickPlugin.Enable == 1)
-								  {
-									 
-									$gameSystem._DayMonthYearTickPlugin.Interval = setInterval(fnInterval, $gameSystem._DayMonthYearTickPlugin.RealLifeSecondEquivalent*1000);
-									 
-						
-								  }
-							}
-							
-						}
-					  
-					  
-					  
-					  
-				  }
+					
+					if ($gameSystem._DayMonthYearTickPlugin.Enable == 1 )
+					{
+						 console.log(SceneManager.isGameActive());
+						setTimeout(fnInterval2, $gameSystem._DayMonthYearTickPlugin.RealLifeSecondEquivalent*1000);
+					}
 				}
-*/
+ 
+				
+			};
 				  
 				  
 				  
@@ -316,7 +307,7 @@
 					{
 						
 						$gameSystem._DayMonthYearTickPlugin.Enable = 1;
-						$gameSystem._DayMonthYearTickPlugin.Interval = setInterval(fnInterval, $gameSystem._DayMonthYearTickPlugin.RealLifeSecondEquivalent*1000);
+						setTimeout(fnInterval2, $gameSystem._DayMonthYearTickPlugin.RealLifeSecondEquivalent*1000);
 						$gameSystem._DayMonthYearTickPlugin.ForceUpdate = fnUpdate;
 					}
 					
@@ -325,36 +316,19 @@
 				
 				PluginManager.registerCommand(pluginName, "TimeStop", args => {
 					
-					if ("Interval" in $gameSystem._DayMonthYearTickPlugin == true)
-					{
-						
-						$gameSystem._DayMonthYearTickPlugin.Enable = 0;
-						 clearInterval($gameSystem._DayMonthYearTickPlugin.Interval);
-						 delete $gameSystem._DayMonthYearTickPlugin.Interval;
-					}
-					
+					$gameSystem._DayMonthYearTickPlugin.Enable = 0;
 				});
 		
 				
-				PluginManager.registerCommand(pluginName, "ShowGUI", args => {
-					
-					//Create a new 'MyWindow'
-					//myWindow = new MyWindow(new Rectangle(0, 0, 400, 100));
-					//Use the scene.addChild method to add the new 'myWindow' to the scene at the specified coordinates.
-					//myWindow.drawRect(0, 0, 400, 100);
-					
-				});
-		
-				PluginManager.registerCommand(pluginName, "HideGUI", args => {
-					
-					
-				});
 		
 	}
 
 
+
+
 var dataM2 = DataManager.correctDataErrors;
 	DataManager.correctDataErrors = function(){
+		
 		dataM2();
 		if ("_DayMonthYearTickPlugin" in $gameSystem == true)
 		{
@@ -363,8 +337,8 @@ var dataM2 = DataManager.correctDataErrors;
 				if ($gameSystem._DayMonthYearTickPlugin.Enable == 1)
 				  {
 					 
-					$gameSystem._DayMonthYearTickPlugin.Interval = setInterval(fnInterval, $gameSystem._DayMonthYearTickPlugin.RealLifeSecondEquivalent*1000);
-						$gameSystem._DayMonthYearTickPlugin.ForceUpdate = fnUpdate;			 
+					setTimeout(fnInterval2, $gameSystem._DayMonthYearTickPlugin.RealLifeSecondEquivalent*1000);
+					$gameSystem._DayMonthYearTickPlugin.ForceUpdate = fnUpdate;	
 				  }
 			}
 			
@@ -522,27 +496,3 @@ function DayMonthYearTickSetYear(getValue){
 }
 
 
-function MyWindow() {
-//this function will run whenever we make a new MyWindow object(a new window of this type)
-// arguments is a special keyword, which basically means all the arguments passed into MyWindow upon creation, will be sent to the initialize method
-this.initialize.apply(this, arguments);
-}
-
-//This line of code gives us all the functionality provided in Window_Base, and makes it a part of our MyWindow class
-MyWindow.prototype = Object.create(Window_Base.prototype)
-//This sets the constructor to be MyWindow; nothing special here
-MyWindow.prototype.constructor = MyWindow;
-
-//This is the initialize method that's called above when my window is instantiated.
-//The argument keyword essentially passes the information you enter into the parameters x, y, width, height below
-MyWindow.prototype.initialize = function(x, y, width, height) {
-//This call, calls the original code provided in the Window_Base.prototype function, allowing us to make use of it (think of it like copy and pasting instructions)
-//This is only important, because we plan to add more code to when we initialize a window.
-Window_Base.prototype.initialize.call(this, x, y, width, height);
-}
-
-//The core of any new window class; this is what handles processing for the window while the game is running
-//We call the Window_Base.prototype update method, so we can use that code and also add more to this function.
-MyWindow.prototype.update = function() {
-Window_Base.prototype.update.call(this);
-}
